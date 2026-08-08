@@ -48,13 +48,20 @@
   }
   .lede{max-width:62ch;color:#d3d3dc}
 
-  .shots{display:grid;gap:20px}
-  figure{margin:0}
-  figure img{
-    width:100%;height:auto;display:block;border-radius:10px;
-    border:1px solid var(--line);background:#000;
+  /* The screenshots are ~70% near-black, so on a near-black page they
+     vanish. They need a lit frame to read as screens at all, and full
+     width because they are 2.17:1 landscape. */
+  .shots{display:grid;gap:28px;max-width:920px;margin:0 auto}
+  figure{
+    margin:0;background:var(--panel);padding:10px;border-radius:14px;
+    border:1px solid #3b3b52;
+    box-shadow:0 10px 30px rgba(0,0,0,.55), 0 0 0 1px rgba(242,199,51,.08);
   }
-  figcaption{color:var(--muted);font-size:.9rem;padding-top:8px}
+  figure img{
+    width:100%;height:auto;display:block;border-radius:8px;
+    background:#000;outline:1px solid rgba(242,199,51,.18);outline-offset:-1px;
+  }
+  figcaption{color:var(--muted);font-size:.9rem;padding:10px 4px 2px}
 
   .feat{display:grid;gap:18px;grid-template-columns:1fr}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
@@ -65,9 +72,9 @@
   footer a{margin:0 10px;white-space:nowrap}
 
   @media(min-width:720px){
-    .shots{grid-template-columns:1fr 1fr}
+    /* .shots stays single-column on purpose: two columns squeezed a
+       2.17:1 screenshot to ~510x234, too small to read. */
     .feat{grid-template-columns:1fr 1fr}
-    .shots figure.wide{grid-column:1 / -1}
   }
 </style>
 </head>
