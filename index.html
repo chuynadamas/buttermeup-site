@@ -72,12 +72,33 @@
   .lede{max-width:62ch;color:#d3d3dc}
   .lede.quiet{color:var(--gold);font-style:italic;margin-bottom:0}
 
-  .panita{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
-  .panita img{
-    width:144px;height:auto;image-rendering:pixelated;flex:none;
-    filter:drop-shadow(0 0 22px rgba(235,150,170,.28));
+  /* Panita plays her real in-game animation off one sprite sheet:
+     frames 0-1 are the idle (0.25s each) and 2-7 the win cheer (0.12s
+     each), exactly as ToastNode.swift runs them. Stepped background
+     positions beat swapping img.src - no request per frame, no flash. */
+  .h2-panita{display:flex;align-items:center;gap:14px}
+  .panita{
+    --fw:45px;                       /* one frame, 72x80 native */
+    width:var(--fw); height:50px; flex:none;
+    background-image:url("img/panita-sheet.png");
+    background-repeat:no-repeat;
+    background-size:calc(var(--fw) * 8) 100%;   /* 8 frames wide */
+    image-rendering:pixelated;
+    filter:drop-shadow(0 0 14px rgba(235,150,170,.3));
   }
-  .panita > div{flex:1 1 320px}
+  .panita.idle{animation:panita-idle .5s steps(2) infinite}
+  .panita.win {animation:panita-win .72s steps(6) infinite}
+  @keyframes panita-idle{
+    from{background-position:0 0}
+    to  {background-position:calc(var(--fw) * -2) 0}
+  }
+  @keyframes panita-win{
+    from{background-position:calc(var(--fw) * -2) 0}
+    to  {background-position:calc(var(--fw) * -8) 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .panita.idle,.panita.win{animation:none;background-position:0 0}
+  }
 
   /* The screenshots are ~70% near-black, so on a near-black page they
      vanish. They need a lit frame to read as screens at all, and full
@@ -136,20 +157,18 @@
 
 <section>
   <div class="wrap">
-    <h2>Why the running</h2>
-    <div class="panita">
-      <img id="panita" src="img/panita.png"
-           alt="Panita, a slice of toast with a pink bow and blushing cheeks">
-      <div>
-        <p class="lede">
-          Her name is Panita, and she is waiting at the end of every level.
-          That is the whole reason for the sprint: get across the kitchen
-          before you are a puddle, and reach her with something left of
-          yourself.
-        </p>
-        <p class="lede quiet">Butter and toast, together at last.</p>
-      </div>
-    </div>
+    <h2 class="h2-panita">
+      <span id="panita" class="panita idle" role="img"
+            aria-label="Panita, a slice of toast with a pink bow, cheering"></span>
+      Why the running
+    </h2>
+    <p class="lede">
+      Her name is Panita, and she is waiting at the end of every level.
+      That is the whole reason for the sprint: get across the kitchen
+      before you are a puddle, and reach her with something left of
+      yourself.
+    </p>
+    <p class="lede quiet">Butter and toast, together at last.</p>
   </div>
 </section>
 
@@ -227,58 +246,48 @@
 // frames on a slow, uneven beat so she reads as alive rather than as a
 // looping GIF: she holds the idle pose, blinks into the cheer, holds it
 // briefly, and settles back.
+// Panita idles, then breaks into her win cheer for a couple of loops and
+// settles back. CSS owns the frame stepping; this only swaps the class,
+// on an uneven beat so she reads as a character rather than a GIF.
 (function () {
-  var img = document.getElementById('panita');
-  if (!img) return;
+  var el = document.getElementById('panita');
+  if (!el) return;
 
-  var IDLE = 'img/panita.png';
-  var WIN  = 'img/panita-win.png';
-
-  // Preload so the first swap does not flash an empty box.
-  var pre = new Image();
-  pre.src = WIN;
-
-  // Respect the OS "reduce motion" setting — an animation nobody asked
-  // for is exactly what that preference exists to stop.
+  var WIN_LOOP = 720;                 // 6 frames x 0.12s, matching the game
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
   var timer = null;
 
   function cheer() {
-    img.src = WIN;
+    el.classList.replace('idle', 'win');
     timer = setTimeout(function () {
-      img.src = IDLE;
-      timer = setTimeout(cheer, 2600 + Math.random() * 2200);
-    }, 900);
+      el.classList.replace('win', 'idle');
+      timer = setTimeout(cheer, 3000 + Math.random() * 2500);
+    }, WIN_LOOP * 2);                 // two full cheers, then settle
   }
 
   function start() {
-    if (timer) return;
-    timer = setTimeout(cheer, 1800);
+    if (timer || still.matches) return;
+    timer = setTimeout(cheer, 2000);
   }
 
   function stop() {
     clearTimeout(timer);
     timer = null;
-    img.src = IDLE;
+    el.classList.replace('win', 'idle');
   }
 
-  function sync() {
-    if (still.matches) { stop(); } else { start(); }
-  }
-
-  // Only animate while she is actually on screen.
+  // Only run while she is actually on screen.
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting && !still.matches) { start(); } else { stop(); }
-      });
-    }, { threshold: 0.25 }).observe(img);
+      entries.forEach(function (e) { e.isIntersecting ? start() : stop(); });
+    }, { threshold: 0.25 }).observe(el);
   } else {
-    sync();
+    start();
   }
 
-  still.addEventListener ? still.addEventListener('change', sync)
-                         : still.addListener(sync);
+  var onPref = function () { still.matches ? stop() : start(); };
+  still.addEventListener ? still.addEventListener('change', onPref)
+                         : still.addListener(onPref);
 })();
 </script>
 
