@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ButterMeUp! - an arcade auto-runner for iPhone and iPad</title>
+<meta name="description" content="A stick of butter runs for its life across a hot kitchen. Eleven hand-built levels, 33 hidden breads, and an endless mode. Coming soon to the App Store.">
+<meta property="og:title" content="ButterMeUp!">
+<meta property="og:description" content="A stick of butter runs for its life across a hot kitchen. Eleven levels, 33 hidden breads, endless mode.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0b0b12; --panel:#14141f; --line:#2a2a3a;
+    --gold:#f2c733; --gold-dim:#8a6a12;
+    --text:#e9e9ee; --muted:#9a9aa8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.65 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  a{color:var(--gold)}
+
+  header{padding:72px 0 56px;text-align:center;border-bottom:1px solid var(--line)}
+  header img.hero{
+    width:96px;height:96px;image-rendering:pixelated;
+    filter:drop-shadow(0 0 24px rgba(242,199,51,.35));
+  }
+  h1{
+    margin:18px 0 6px;font-size:clamp(2.2rem,6vw,3.4rem);letter-spacing:.02em;
+    color:var(--gold);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .tag{color:var(--muted);font-size:1.1rem;margin:0 auto 28px;max-width:46ch}
+  .cta{
+    display:inline-block;padding:14px 28px;border-radius:12px;
+    background:var(--gold);color:#111;font-weight:700;text-decoration:none;
+    border:2px solid #fff3;
+  }
+  .cta.pending{background:transparent;color:var(--gold);border-color:var(--gold-dim)}
+  .cta-note{display:block;margin-top:12px;color:var(--muted);font-size:.9rem}
+
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  h2{
+    font-size:1.5rem;margin:0 0 22px;color:var(--gold);
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .lede{max-width:62ch;color:#d3d3dc}
+
+  .shots{display:grid;gap:20px}
+  figure{margin:0}
+  figure img{
+    width:100%;height:auto;display:block;border-radius:10px;
+    border:1px solid var(--line);background:#000;
+  }
+  figcaption{color:var(--muted);font-size:.9rem;padding-top:8px}
+
+  .feat{display:grid;gap:18px;grid-template-columns:1fr}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .card h3{margin:0 0 6px;font-size:1.05rem;color:var(--text)}
+  .card p{margin:0;color:var(--muted);font-size:.95rem}
+
+  footer{padding:40px 0 60px;color:var(--muted);font-size:.9rem;text-align:center}
+  footer a{margin:0 10px;white-space:nowrap}
+
+  @media(min-width:720px){
+    .shots{grid-template-columns:1fr 1fr}
+    .feat{grid-template-columns:1fr 1fr}
+    .shots figure.wide{grid-column:1 / -1}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img class="hero" src="img/hero.png" alt="The butter cube, the game's main character">
+    <h1>ButterMeUp!</h1>
+    <p class="tag">A stick of butter runs for its life across a very hot kitchen. Keep moving, keep your shape.</p>
+    <a class="cta pending" href="https://apps.apple.com/app/id6780270055">Coming soon to the App Store</a>
+    <span class="cta-note">iPhone and iPad &middot; in review</span>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="lede">
+      An arcade auto-runner with one twist: you are made of butter, and you are
+      melting the whole time. Fire platforms speed you up and cook you twice as
+      fast. Snow slows the melt but turns every landing into a skid. Honey grabs
+      your feet. Jelly launches you. The bar in the corner is your life, and it
+      is always going down.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Screens</h2>
+    <div class="shots">
+      <figure class="wide">
+        <img src="img/shot-fire.png" alt="The butter cube running across a burning platform, melt bar in the corner">
+        <figcaption>Fire makes you faster and costs you dearly.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/shot-jump.png" alt="The butter cube mid-jump above a jelly pad and a snow platform">
+        <figcaption>Jelly pads launch you further than any jump.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/shot-levels.png" alt="Level select screen showing unlocked levels and bread markers">
+        <figcaption>Three hidden breads per level, and it remembers which you missed.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/shot-late.png" alt="A late campaign level with long fire runs and wide gaps">
+        <figcaption>The later levels stop being polite.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/shot-infinity.png" alt="Infinity mode showing the current distance and best distance">
+        <figcaption>Infinity mode: no end, just a number.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What is in it</h2>
+    <div class="feat">
+      <div class="card">
+        <h3>Eleven hand-built levels</h3>
+        <p>A campaign that teaches one idea at a time and then combines them, ending somewhere genuinely hard.</p>
+      </div>
+      <div class="card">
+        <h3>33 hidden breads</h3>
+        <p>Three per level, tucked down risky routes. Dying resets them, so a clean 3 of 3 has to be earned in one run.</p>
+      </div>
+      <div class="card">
+        <h3>Endless mode</h3>
+        <p>Infinity generates fresh ground forever. All-time and weekly leaderboards.</p>
+      </div>
+      <div class="card">
+        <h3>Seventeen achievements</h3>
+        <p>From your first flip to collecting every last bread in the game.</p>
+      </div>
+      <div class="card">
+        <h3>No accounts, no ads, no tracking</h3>
+        <p>Pay once. The game collects nothing and makes no network requests. Progress stays on your device.</p>
+      </div>
+      <div class="card">
+        <h3>Original music and sound</h3>
+        <p>Three lo-fi tracks written for the game, switchable or off. Every sound generated from scratch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="https://chuynadamas.github.io/buttermeup-support/">Support</a>
+    <a href="https://chuynadamas.github.io/buttermeup-support/privacy.html">Privacy</a>
+    <a href="mailto:buttermeupgame@proton.me">Contact</a>
+    <p>2026 Jesus Cruz Perez</p>
+  </div>
+</footer>
+
+</body>
+</html>
