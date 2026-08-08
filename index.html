@@ -70,6 +70,14 @@
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   .lede{max-width:62ch;color:#d3d3dc}
+  .lede.quiet{color:var(--gold);font-style:italic;margin-bottom:0}
+
+  .panita{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+  .panita img{
+    width:144px;height:auto;image-rendering:pixelated;flex:none;
+    filter:drop-shadow(0 0 22px rgba(235,150,170,.28));
+  }
+  .panita > div{flex:1 1 320px}
 
   /* The screenshots are ~70% near-black, so on a near-black page they
      vanish. They need a lit frame to read as screens at all, and full
@@ -107,7 +115,7 @@
   <div class="wrap">
     <img class="hero" src="img/hero.png" alt="The butter cube, the game's main character">
     <h1>ButterMeUp!</h1>
-    <p class="tag">A stick of butter runs for its life across a very hot kitchen. Keep moving, keep your shape.</p>
+    <p class="tag">A stick of butter runs for its life across a very hot kitchen, chasing a slice of toast named Panita.</p>
     <a class="cta pending" href="https://apps.apple.com/app/id6780270055">Coming soon to the App Store</a>
     <span class="cta-note">iPhone and iPad &middot; in review</span>
   </div>
@@ -123,6 +131,24 @@
       your feet. Jelly launches you. The bar in the corner is your life, and it
       is always going down.
     </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Why the running</h2>
+    <div class="panita">
+      <img src="img/panita.png" alt="Panita, a slice of toast with a pink bow and blushing cheeks">
+      <div>
+        <p class="lede">
+          Her name is Panita, and she is waiting at the end of every level.
+          That is the whole reason for the sprint: get across the kitchen
+          before you are a puddle, and reach her with something left of
+          yourself.
+        </p>
+        <p class="lede quiet">Butter and toast, together at last.</p>
+      </div>
+    </div>
   </div>
 </section>
 
