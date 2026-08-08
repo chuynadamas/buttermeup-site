@@ -138,7 +138,8 @@
   <div class="wrap">
     <h2>Why the running</h2>
     <div class="panita">
-      <img src="img/panita.png" alt="Panita, a slice of toast with a pink bow and blushing cheeks">
+      <img id="panita" src="img/panita.png"
+           alt="Panita, a slice of toast with a pink bow and blushing cheeks">
       <div>
         <p class="lede">
           Her name is Panita, and she is waiting at the end of every level.
@@ -220,6 +221,66 @@
     <p>2026 Jesus Cruz Perez</p>
   </div>
 </footer>
+
+<script>
+// Panita alternates between her idle face and her win cheer. Kept to two
+// frames on a slow, uneven beat so she reads as alive rather than as a
+// looping GIF: she holds the idle pose, blinks into the cheer, holds it
+// briefly, and settles back.
+(function () {
+  var img = document.getElementById('panita');
+  if (!img) return;
+
+  var IDLE = 'img/panita.png';
+  var WIN  = 'img/panita-win.png';
+
+  // Preload so the first swap does not flash an empty box.
+  var pre = new Image();
+  pre.src = WIN;
+
+  // Respect the OS "reduce motion" setting — an animation nobody asked
+  // for is exactly what that preference exists to stop.
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var timer = null;
+
+  function cheer() {
+    img.src = WIN;
+    timer = setTimeout(function () {
+      img.src = IDLE;
+      timer = setTimeout(cheer, 2600 + Math.random() * 2200);
+    }, 900);
+  }
+
+  function start() {
+    if (timer) return;
+    timer = setTimeout(cheer, 1800);
+  }
+
+  function stop() {
+    clearTimeout(timer);
+    timer = null;
+    img.src = IDLE;
+  }
+
+  function sync() {
+    if (still.matches) { stop(); } else { start(); }
+  }
+
+  // Only animate while she is actually on screen.
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && !still.matches) { start(); } else { stop(); }
+      });
+    }, { threshold: 0.25 }).observe(img);
+  } else {
+    sync();
+  }
+
+  still.addEventListener ? still.addEventListener('change', sync)
+                         : still.addListener(sync);
+})();
+</script>
 
 </body>
 </html>
