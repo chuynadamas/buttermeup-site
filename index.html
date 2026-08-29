@@ -100,6 +100,17 @@
     .panita.idle,.panita.win{animation:none;background-position:0 0}
   }
 
+  /* Launch clip: Apple's "Now Available" card. Portrait 9:16, so it is
+     capped narrow - at full width it would tower over the page. Muted and
+     inline so iOS will autoplay it at all; controls appear for anyone who
+     has asked for reduced motion. */
+  .launch{display:flex;gap:30px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .launch video{
+    width:260px;height:auto;flex:none;border-radius:16px;
+    border:1px solid #3b3b52;background:#000;
+    box-shadow:0 10px 30px rgba(0,0,0,.55);
+  }
+  .launch .say{flex:1 1 320px;max-width:46ch}
   /* The screenshots are ~70% near-black, so on a near-black page they
      vanish. They need a lit frame to read as screens at all, and full
      width because they are 2.17:1 landscape. */
@@ -169,6 +180,27 @@
       yourself.
     </p>
     <p class="lede quiet">Butter and toast, together at last.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Out now</h2>
+    <div class="launch">
+      <video id="launchClip" src="img/launch.mp4" poster="img/launch-poster.jpg"
+             muted loop playsinline autoplay preload="metadata"
+             aria-label="ButterMeUp! is now available on the App Store"></video>
+      <div class="say">
+        <p class="lede">
+          After five months it is on the App Store, and it is free: no ads,
+          no purchases, nothing collected, and it plays with no connection
+          at all.
+        </p>
+        <p style="margin-top:18px">
+          <a class="cta" href="https://apps.apple.com/app/id6780270055">Download on the App Store</a>
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -290,6 +322,20 @@
   var onPref = function () { still.matches ? stop() : start(); };
   still.addEventListener ? still.addEventListener('change', onPref)
                          : still.addListener(onPref);
+})();
+</script>
+<script>
+// Honour reduced motion: stop the launch clip looping and hand over controls.
+(function(){
+  var v=document.getElementById('launchClip');
+  if(!v) return;
+  var q=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function sync(){
+    if(q.matches){ v.pause(); v.loop=false; v.controls=true; }
+    else { v.controls=false; v.loop=true; v.play().catch(function(){ v.controls=true; }); }
+  }
+  sync();
+  q.addEventListener ? q.addEventListener('change', sync) : q.addListener(sync);
 })();
 </script>
 
