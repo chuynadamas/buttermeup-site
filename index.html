@@ -111,6 +111,19 @@
     box-shadow:0 10px 30px rgba(0,0,0,.55);
   }
   .launch .say{flex:1 1 320px;max-width:46ch}
+  /* Trailer: real gameplay, 2.17:1 landscape. Full column width and a
+     lit frame for the same reason the screenshots need one - the footage
+     is mostly near-black and would otherwise bleed into the page. */
+  .trailer{
+    max-width:920px;margin:0 auto;background:var(--panel);padding:10px;
+    border-radius:14px;border:1px solid #3b3b52;
+    box-shadow:0 10px 30px rgba(0,0,0,.55), 0 0 0 1px rgba(242,199,51,.08);
+  }
+  .trailer video{
+    width:100%;height:auto;display:block;border-radius:8px;background:#000;
+    outline:1px solid rgba(242,199,51,.18);outline-offset:-1px;
+  }
+  .trailer-note{color:var(--muted);font-size:.9rem;padding:10px 4px 2px;text-align:center}
   /* The screenshots are ~70% near-black, so on a near-black page they
      vanish. They need a lit frame to read as screens at all, and full
      width because they are 2.17:1 landscape. */
@@ -201,6 +214,18 @@
         </p>
       </div>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>In motion</h2>
+    <div class="trailer">
+      <video id="trailerClip" src="img/trailer.mp4" poster="img/trailer-poster.jpg"
+             muted loop playsinline autoplay preload="metadata"
+             aria-label="Gameplay from ButterMeUp!: running fire platforms, a jelly launch, and reaching Panita"></video>
+    </div>
+    <p class="trailer-note">Real play, including the jump that did not work.</p>
   </div>
 </section>
 
@@ -328,12 +353,15 @@
 // Honour reduced motion: stop the launch clip looping and hand over controls.
 (function(){
   var v=document.getElementById('launchClip');
-  if(!v) return;
+  var t=document.getElementById('trailerClip');
+  if(!v && !t) return;
   var q=window.matchMedia('(prefers-reduced-motion: reduce)');
-  function sync(){
-    if(q.matches){ v.pause(); v.loop=false; v.controls=true; }
-    else { v.controls=false; v.loop=true; v.play().catch(function(){ v.controls=true; }); }
+  function apply(el){
+    if(!el) return;
+    if(q.matches){ el.pause(); el.loop=false; el.controls=true; }
+    else { el.controls=false; el.loop=true; el.play().catch(function(){ el.controls=true; }); }
   }
+  function sync(){ apply(v); apply(t); }
   sync();
   q.addEventListener ? q.addEventListener('change', sync) : q.addListener(sync);
 })();
